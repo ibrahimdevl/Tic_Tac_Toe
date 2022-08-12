@@ -163,10 +163,20 @@ class _MyHomePageState extends State<MyHomePage> {
       return AlertDialog(
         title: Text('Winner'),
         content: Image.asset(tileState == TileState.CROSS ? 'assets/images/x.png' : 'assets/images/o.png'),
-        actions: [TextButton(onPressed: () {},
+        actions: [TextButton(onPressed: () {
+          _resetGame();
+          Navigator.of(context).pop();
+        },
             child: Text('New Game'))],
       );
         });
+  }
+
+  void _resetGame() {
+    setState(() {
+      _boardState = List.filled(9, TileState.EMPTY);
+      _currentTurn = TileState.CROSS;
+    });
   }
 
 }
