@@ -53,6 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _boardState = List.filled(9, TileState.EMPTY);
 
+  var _currentTurn = TileState.CROSS;
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -97,9 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: tileStateChunk.asMap().entries.map((innerEntry) {
                     final innerIndex = innerEntry.key;
                     final tileState = innerEntry.value;
-                    final tileIndex = (chunckIndex - 3) + innerIndex;
+                    final tileIndex = (chunckIndex * 3) + innerIndex;
                     return BoardTile(dimension: tileDimension,
-                        onPressed: () => print('tapped index $tileIndex') ,
+                        onPressed: () => _updateTilesStateForInde(tileIndex) ,
                         tileState: tileState
                     );
                   }).toList(),
@@ -107,4 +109,64 @@ class _MyHomePageState extends State<MyHomePage> {
         }).toList()));
     });
   }
+
+
+  void _updateTilesStateForInde(int selectedIndex) {
+    if(_boardState[selectedIndex] == TileState.EMPTY) {
+      setState(() {
+        _boardState[selectedIndex] = _currentTurn;
+        _currentTurn  = _currentTurn == TileState.CROSS ? TileState.CIRCLE :  TileState.CROSS;
+      });
+      final winner = _findWinner();
+      if(winner!= null && winner != TileState.NULL) {
+        print('Winner is: $winner');
+        _showWinnerDialog(winner);
+      }
+    }
+  }
+
+  TileState _findWinner() {
+    TileState Function(int, int, int) winnerForMatch = (a, b, c) {
+      if(_boardState[a] != TileState.EMPTY && _boardState[a] != TileState.NULL) {
+        if((_boardState[a] == _boardState[b]) && (_boardState[a] == _boardState[c])) {
+          return _boardState[a];
+        }
+      }
+      return TileState.NULL;
+    };
+
+    final checks = [
+      winnerForMatch(0, 1, 2),
+      winnerForMatch(3, 4, 5),
+      winnerForMatch(6, 7, 8),
+      winnerForMatch(0, 3, 6),
+      winnerForMatch(1, 4, 7),
+      winnerForMatch(2, 5, 8),
+      winnerForMatch(0, 4, 8),
+      winnerForMatch(2, 4, 6),
+    ];
+
+    TileState winner = TileState.NULL;
+    for(int i =0; i<checks.length; i++) {
+      if(checks[i] != TileState.NULL) {
+        winner = checks[i];
+        break;
+      }
+    }
+    return winner;
+  }
+
+
+  void _showWinnerDialog(TileState tileState) {
+    showDialog(context: context,
+        builder: (_){
+      return AlertDialog(
+        title: Text('Winner'),
+        content: Image.asset(tileState == TileState.CROSS ? 'assets/images/x.png' : 'assets/images/o.png'),
+        actions: [TextButton(onPressed: () {},
+            child: Text('New Game'))],
+      );
+        });
+  }
+
 }

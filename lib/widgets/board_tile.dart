@@ -23,7 +23,7 @@ class BoardTile extends StatelessWidget {
     );
   }
   Widget WidgetForTileState() {
-    Widget widget;
+    Widget widget = Container();
 
     switch (tileState) {
       case TileState.EMPTY:
