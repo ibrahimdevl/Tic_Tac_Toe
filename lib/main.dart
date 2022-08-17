@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tic_tac_toe/utils/routes.dart';
+import 'package:tic_tac_toe/utils/theme_number.dart';
 import 'package:tic_tac_toe/utils/tile_state.dart';
 import 'package:tic_tac_toe/widgets/board_tile.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [
+    ChangeNotifierProvider(
+        create: (_) => ThemeNumber(0)
+    ),
+  ],
+      child: const MyApp()
+  ),
+
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/welcome',
       onGenerateRoute: RouteGenerator.generateRoute,
-      title: 'Flutter Demo',
+      title: 'Tic Tac Toe',
       theme: ThemeData(
         // This is the theme of your application.
         //

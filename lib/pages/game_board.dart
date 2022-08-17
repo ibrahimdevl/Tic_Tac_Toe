@@ -6,6 +6,7 @@ import '../utils/tile_state.dart';
 
 
 class GameBoard extends StatefulWidget {
+
   const GameBoard({Key? key}) : super(key: key);
 
   @override
@@ -194,7 +195,7 @@ class _GameBoardState extends State<GameBoard> {
         builder: (_){
           return AlertDialog(
             title: Text('Winner'),
-            content: Image.asset(tileState == TileState.CROSS ? 'assets/images/x.png' : 'assets/images/o.png'),
+            content: Image.asset(tileState == TileState.CROSS ? 'assets/images/x2.png' : 'assets/images/o2.png'),
             actions: [TextButton(onPressed: () {
               _resetGame();
               Navigator.of(context).pop();
