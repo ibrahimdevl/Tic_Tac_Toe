@@ -21,6 +21,8 @@ class _GameBoardState extends State<GameBoard> {
 
   @override
   Widget build(BuildContext context) {
+    var heigth = MediaQuery.of(context).size.height - 100.0;
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -39,7 +41,73 @@ class _GameBoardState extends State<GameBoard> {
         child: Stack(
           children: [
             Image.asset('assets/images/board.png'),
-            _boardTiles()
+            _boardTiles(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0, top: 400.0),
+              child: Row(
+
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _resetGame();
+                    }, // This child can be everything. I want to choose a beautiful Text Widget
+                    style: ElevatedButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      minimumSize: const Size(100, 50), //change size of this beautiful button
+                      // We can change style of this beautiful elevated button thanks to style prop
+                      primary: Colors.amber, // we can set primary color
+                      onPrimary: Colors.white, // change color of child prop
+                      onSurface: Colors.blue, // surface color
+                      shadowColor: Colors
+                          .grey, //shadow prop is a very nice prop for every button or card widgets.
+                      elevation: 5, // we can set elevation of this beautiful button
+                      side: const BorderSide(
+                          color: Colors.white, //change border color
+                          width: 2, //change border width
+                          style: BorderStyle
+                              .solid), // change border side of this beautiful button
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            30), //change border radius of this beautiful button thanks to BorderRadius.circular function
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.padded,
+                    ), //This prop for beautiful expressions
+                    child: const Text(
+                        "Play again"),
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width/4,),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/welcome');
+                    }, // This child can be everything. I want to choose a beautiful Text Widget
+                    style: ElevatedButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      minimumSize: const Size(100, 50), //change size of this beautiful button
+                      // We can change style of this beautiful elevated button thanks to style prop
+                      primary: Colors.amber, // we can set primary color
+                      onPrimary: Colors.white, // change color of child prop
+                      onSurface: Colors.blue, // surface color
+                      shadowColor: Colors
+                          .grey, //shadow prop is a very nice prop for every button or card widgets.
+                      elevation: 5, // we can set elevation of this beautiful button
+                      side: const BorderSide(
+                          color: Colors.white, //change border color
+                          width: 2, //change border width
+                          style: BorderStyle
+                              .solid), // change border side of this beautiful button
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            30), //change border radius of this beautiful button thanks to BorderRadius.circular function
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.padded,
+                    ), //This prop for beautiful expressions
+                    child: const Text(
+                        "Menu"),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -65,7 +133,7 @@ class _GameBoardState extends State<GameBoard> {
                     final tileState = innerEntry.value;
                     final tileIndex = (chunckIndex * 3) + innerIndex;
                     return BoardTile(dimension: tileDimension,
-                        onPressed: () => _updateTilesStateForInde(tileIndex) ,
+                        onPressed: () => _updateTilesStateForIndex(tileIndex) ,
                         tileState: tileState
                     );
                   }).toList(),
@@ -75,7 +143,7 @@ class _GameBoardState extends State<GameBoard> {
   }
 
 
-  void _updateTilesStateForInde(int selectedIndex) {
+  void _updateTilesStateForIndex(int selectedIndex) {
     if(_boardState[selectedIndex] == TileState.EMPTY) {
       setState(() {
         _boardState[selectedIndex] = _currentTurn;
