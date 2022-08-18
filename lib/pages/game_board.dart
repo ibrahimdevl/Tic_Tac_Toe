@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/widgets/board_tile.dart';
 
@@ -146,6 +147,7 @@ class _GameBoardState extends State<GameBoard> {
 
   void _updateTilesStateForIndex(int selectedIndex) {
     if(_boardState[selectedIndex] == TileState.EMPTY) {
+      AudioPlayer().play(AssetSource('/assets/audio/tap.mp3'));
       setState(() {
         _boardState[selectedIndex] = _currentTurn;
         _currentTurn  = _currentTurn == TileState.CROSS ? TileState.CIRCLE :  TileState.CROSS;
@@ -191,12 +193,14 @@ class _GameBoardState extends State<GameBoard> {
 
 
   void _showWinnerDialog(TileState tileState) {
+    AudioPlayer().play(AssetSource('/assets/audio/victory.mp3'));
     showDialog(context: context,
         builder: (_){
           return AlertDialog(
             title: Text('Winner'),
             content: Image.asset(tileState == TileState.CROSS ? 'assets/images/x2.png' : 'assets/images/o2.png'),
-            actions: [TextButton(onPressed: () {
+            actions: [
+              TextButton(onPressed: () {
               _resetGame();
               Navigator.of(context).pop();
             },
